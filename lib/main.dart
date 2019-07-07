@@ -26,7 +26,7 @@ class RedditHome extends StatefulWidget {
 
 class _RedditHomeState extends State<RedditHome> {
   bool isLoading = false;
-  List<Post> savedPosts;
+  List<dynamic> savedPosts;
 
   @override
   initState() {
@@ -51,7 +51,9 @@ class _RedditHomeState extends State<RedditHome> {
         itemBuilder: (BuildContext context, int index) {
           // print("from main ${index} " + savedPosts[index].toString());
           return ListTile(
-            title: Text(savedPosts[index].title),  
+            title: savedPosts[index]!=null 
+              ? Text(savedPosts[index].title) 
+              : Text("Nothing to Show"),  
             // title: Text("Title"),  
             subtitle: Text("Body"),  
           );

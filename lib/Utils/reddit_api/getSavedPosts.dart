@@ -1,5 +1,6 @@
 import './refreshToken.dart';
 import '../classes/Post.dart';
+import '../classes/Comment.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -10,7 +11,7 @@ Future<List<Post>> getSavedPosts() async {
 
   String oauthUri = "https://oauth.reddit.com/";
   String path = "/user/mushfiq_814/saved";
-  String query = "?limit=10";
+  String query = "?limit=30";
   String after = "";
   // if (after.length > 0) query += ('&after=' + after.toString());
 
@@ -21,18 +22,11 @@ Future<List<Post>> getSavedPosts() async {
     }
   );
 
-  Map<String,dynamic> temp = {
-    "subreddit":"THIS IS A COMMENT"
-  };
-
   if (res.statusCode == 200) {
     dynamic response = json.decode(res.body);
 
     List resList = (response["data"]["children"] as List)
-      .map((item) {
-        if (item["kind"]=="t3") return new Post.getFromJson(item["data"]);
-        else return new Post.getFromJson(temp);
-      })
+      .map((item) => new Post.getFromJson(item["data"], item["kind"]))
       .toList();
       
     return resList;
