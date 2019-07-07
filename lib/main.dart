@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './Utils/reddit_api/getSavedPosts.dart';
-import './Utils/Post.dart';
+import './Utils/classes/Post.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,8 +30,8 @@ class _RedditHomeState extends State<RedditHome> {
 
   @override
   initState() {
-    _fetchData();
     super.initState();
+    _fetchData();
   }
 
   Future _fetchData() async {
@@ -39,22 +39,6 @@ class _RedditHomeState extends State<RedditHome> {
     savedPosts = await getSavedPosts();
     setState(() => isLoading = false);
   }
-
-  // getPreviewImage(List savedPosts, int index) {
-  //   String newPreviewUrl = "";
-  //   dynamic preview = savedPosts[index]["data"]["preview"];
-  //   if (preview!=null) {
-  //     var previewUrl = preview["images"][0]["source"]["url"];
-  //     var newPreviewUrl = previewUrl.replaceAll('amp;','');
-  //     print("index " + index.toString() + ": " + newPreviewUrl);
-  //     // while (newPreviewUrl.indexOf('amp;')>0) {
-  //     //   newPreviewUrl = newPreviewUrl.replaceAll('amp;','');
-  //     // } 
-  //     return newPreviewUrl;
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +49,7 @@ class _RedditHomeState extends State<RedditHome> {
       : ListView.builder(
         itemCount: savedPosts.length,
         itemBuilder: (BuildContext context, int index) {
+          // print("from main ${index} " + savedPosts[index].toString());
           return ListTile(
             title: Text(savedPosts[index].title),  
             // title: Text("Title"),  

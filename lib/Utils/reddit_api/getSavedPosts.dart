@@ -1,5 +1,5 @@
 import './refreshToken.dart';
-import '../Post.dart';
+import '../classes/Post.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -14,35 +14,35 @@ Future<List<Post>> getSavedPosts() async {
   String after = "";
   // if (after.length > 0) query += ('&after=' + after.toString());
 
-  http.Response response = await http.get(
+  http.Response res = await http.get(
     oauthUri + path + query,
     headers: {
       HttpHeaders.authorizationHeader: "Bearer " + token
     }
   );
 
-  String responseBody = response.body;
-  dynamic decodedJson = json.decode(responseBody);
-  List<dynamic> resList = decodedJson["data"]["children"];
+  Map<String,dynamic> temp = {
+    "subreddit":"THIS IS A COMMENT"
+  };
 
-  // after = responseBody["after"];
-  if (response.statusCode == 200) {
+  if (res.statusCode == 200) {
+    dynamic response = json.decode(res.body);
 
-    List postList = resList
+    List resList = (response["data"]["children"] as List)
       .map((item) {
-        print(item['kind']);
-        print(item['kind']);
-        new Post.getFromJson(item['kind']);
+        if (item["kind"]=="t3") return new Post.getFromJson(item["data"]);
+        else return new Post.getFromJson(temp);
       })
       .toList();
       
-    return postList;
+    return resList;
   } else {
-    print("ERROR in getting post: status code: " + response.statusCode.toString());
+    print("ERROR in getting post: status code: " + res.statusCode.toString());
     return null;
   }
+}
 
-  // loop through each item
+// loop through each item
   // results.forEach(element => {
   //   if (!element.data.over_18) {
   //     postLink = "https://www.reddit.com" + element.data.permalink;
@@ -72,4 +72,3 @@ Future<List<Post>> getSavedPosts() async {
 
   //   }
   // }
-}

@@ -11,10 +11,9 @@ class Post {
 
   factory Post.getFromJson(Map<String, dynamic> json) {
     return new Post(
-      // id: json['kind'],
-      id: json.toString(),
-      title: json.toString(),
-      imgUrl: json.toString(),    
+      id: "id",
+      title: json["subreddit"],
+      imgUrl: "image",    
     );
   }
 } 
