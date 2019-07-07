@@ -49,13 +49,15 @@ class _RedditHomeState extends State<RedditHome> {
       : ListView.builder(
         itemCount: savedPosts.length,
         itemBuilder: (BuildContext context, int index) {
-          // print("from main ${index} " + savedPosts[index].toString());
           return ListTile(
-            title: savedPosts[index]!=null 
-              ? Text(savedPosts[index].title) 
-              : Text("Nothing to Show"),  
-            // title: Text("Title"),  
-            subtitle: Text("Body"),  
+            title: savedPosts[index].kind == "t1"
+              ? Text(savedPosts[index].title)
+              : Text(savedPosts[index].title),
+            subtitle: Image.network(
+              savedPosts[index].kind == "t3"
+                ? savedPosts[index].imgUrl
+                : 'https://picsum.photos/250?image=9',
+            ),  
           );
         },
       ),

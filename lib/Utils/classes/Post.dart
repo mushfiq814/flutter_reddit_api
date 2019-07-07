@@ -23,13 +23,14 @@ class Post {
         kind: "t3",
         id: "id",
         title: json["title"],
-        imgUrl: "image",    
+        imgUrl: json["thumbnail"],    
       );
     } else if (kind == "t1") {
       return new Post(
         kind: "t1",
         id: "id",
-        author: "THIS IS A COMMENT"
+        title: json["link_title"],
+        author: json["author"],
       );
     } else {
       return new Post(
