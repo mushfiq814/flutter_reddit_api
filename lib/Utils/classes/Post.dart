@@ -1,10 +1,12 @@
 class Post {
   final String kind;
   final String id;
+  final String subreddit;
 
   // Image Post Attributes
   final String title;
   final String imgUrl;
+  final Map<String,dynamic> previewList;
 
   // Comment Attributes
   final String author;
@@ -12,8 +14,10 @@ class Post {
   Post({
     this.kind,
     this.id,
+    this.subreddit,
     this.title, 
     this.imgUrl,
+    this.previewList,
     this.author,
   });
 
@@ -23,7 +27,9 @@ class Post {
         kind: "t3",
         id: "id",
         title: json["title"],
-        imgUrl: json["thumbnail"],    
+        previewList: json["preview"],
+        imgUrl: "img",
+        subreddit: 'r/' + json["subreddit"] 
       );
     } else if (kind == "t1") {
       return new Post(
@@ -31,12 +37,14 @@ class Post {
         id: "id",
         title: json["link_title"],
         author: json["author"],
+        subreddit: 'r/' + json["subreddit"]
       );
     } else {
       return new Post(
         kind: null,
         id: "id",
-        title: "Nothing to Show"
+        title: "Nothing to Show",
+        subreddit: 'r/' + json["subreddit"]
       );
     }
 

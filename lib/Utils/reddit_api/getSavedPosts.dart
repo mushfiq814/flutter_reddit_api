@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 
+/// returns a listing of saved reddit posts
 Future<List<Post>> getSavedPosts() async {
   String token = await refreshToken();
 
