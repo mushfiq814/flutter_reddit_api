@@ -1,4 +1,4 @@
-import 'package:reddit_app/Utils/classes/Post.dart';
+import 'package:reddit_app/Utils/models/Post.dart';
 import 'package:reddit_app/Utils/reddit_api/refreshToken.dart';
 import './.config/.credentials.dart';
 
@@ -32,7 +32,7 @@ List<Post> getHotPosts(String subredditName) {
   print('Getting Hot Posts');
   List res = hotPosts['data']['children'] as List;
   List<Post> posts = res.map((item) => new Post.getFromJson(item)).toList();
-  print(res.length);
+  print('Found: ' + posts.length.toString() + ' posts in ' + subredditName);
   return posts;
 }
 

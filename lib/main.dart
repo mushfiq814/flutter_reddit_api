@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:reddit_app/Utils/reddit_api/getHotPosts.dart';
 import './Utils/reddit_api/getSavedPosts.dart';
-import './Utils/classes/Post.dart';
+import './Utils/models/Post.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Reddit Demo',
-      theme: ThemeData(fontFamily: 'Product-Sans'),
+      theme: ThemeData(fontFamily: 'Lato'),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Reddit')
@@ -28,7 +29,6 @@ class RedditHome extends StatefulWidget {
 
 class _RedditHomeState extends State<RedditHome> {
   bool isLoading = false;
-  // List<dynamic> savedPosts;
   List<Post> hotPosts;
 
   @override
@@ -39,7 +39,6 @@ class _RedditHomeState extends State<RedditHome> {
 
   Future _fetchData() async {
     setState(() => isLoading = true);
-    // savedPosts = await getSavedPosts();
     // hotPosts = await getHotPosts('android');
     hotPosts = getHotPosts('android');
     setState(() => isLoading = false);
@@ -61,43 +60,21 @@ class _RedditHomeState extends State<RedditHome> {
   }
 
   Widget buildPostCard(int index) {
+    Post currentPost = hotPosts[index];
+    String formattedDate = DateFormat('M/d/yyyy h:m a').format(currentPost.created);
+
     return ListTile(
-      leading: Text('A'),
-      title: Text(hotPosts[index].title),
-      trailing: Text(hotPosts[index].subreddit),
+      contentPadding: EdgeInsets.all(10.0),
+      leading: Text(currentPost.score.toString()),
+      title: Text(currentPost.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(currentPost.author),
+          Image.network(currentPost.thumbnail),
+        ],
+      ),
+      trailing: Text(formattedDate),
     );
   }
-
-//   Widget buildPostCard(int index) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: <Widget>[
-//         savedPosts[index].kind == "t1"
-//           ? Text(savedPosts[index].title, style: titleStyle,)
-//           : Text(savedPosts[index].title, style: titleStyle,),
-//         Text(savedPosts[index].subreddit, style: subtitleStyle),
-//         // Image.network(
-//         //   savedPosts[index].kind == "t3" && savedPosts[index].previewList != null
-//         //     ? savedPosts[index].previewList["images"][0]["variants"].containsKey("gif")
-//         //       ? savedPosts[index].previewList["images"][0]["variants"]["gif"]["source"]["url"]
-//         //       : savedPosts[index].previewList["images"][0]["source"]["url"].replaceAll('amp;','')
-//         //     : 'https://picsum.photos/250?image=9',
-//         //   fit: BoxFit.contain
-//         // ), 
-//         // savedPosts[index].kind == "t3"
-//         //   ? Text(savedPosts[index].previewList["images"][0]["source"]["url"].replaceAll('amp;',''))
-//         //   : Text('https://picsum.photos/250?image=9'),
-//         // SizedBox(height: 20.0,),
-//       ],
-//     );
-//   }
-
-//   TextStyle titleStyle = TextStyle(
-//     fontSize: 40.0,
-//     fontWeight: FontWeight.bold,
-//   );
-
-//   TextStyle subtitleStyle = TextStyle(
-//     fontSize: 30.0,
-//   );
 }

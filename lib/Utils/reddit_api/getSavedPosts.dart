@@ -1,5 +1,5 @@
 import './refreshToken.dart';
-import '../classes/Post.dart';
+import '../models/Post.dart';
 import './.config/.credentials.dart';
 
 import 'package:http/http.dart' as http;
