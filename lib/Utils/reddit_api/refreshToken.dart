@@ -4,8 +4,7 @@ import 'dart:convert';
 import './.config/.credentials.dart';
 
 Future<String> refreshToken() async {
-  String tokenUri = "https://www.reddit.com/api/v1/access_token";
-
+  String tokenUri = credentials["TOKEN_URI"];
   String basicAuthHeader = credentials['CLIENT_ID'] + ":" + credentials['CLIENT_SECRET'];
   List<int> basicAuthHeaderBytes = utf8.encode(basicAuthHeader);
   String basicAuthHeaderEncoded = "Basic " + base64.encode(basicAuthHeaderBytes);
@@ -23,6 +22,5 @@ Future<String> refreshToken() async {
     body: jsonBody
   );
 
-  String accessToken = json.decode(res.body)['access_token'];
-  return accessToken;
+  return json.decode(res.body)['access_token'].toString();;
 }

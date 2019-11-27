@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit_app/Utils/reddit_api/getHotPosts.dart';
 import './Utils/reddit_api/getSavedPosts.dart';
 import './Utils/classes/Post.dart';
 
@@ -27,7 +28,8 @@ class RedditHome extends StatefulWidget {
 
 class _RedditHomeState extends State<RedditHome> {
   bool isLoading = false;
-  List<dynamic> savedPosts;
+  // List<dynamic> savedPosts;
+  List<Post> hotPosts;
 
   @override
   initState() {
@@ -37,21 +39,21 @@ class _RedditHomeState extends State<RedditHome> {
 
   Future _fetchData() async {
     setState(() => isLoading = true);
-    savedPosts = await getSavedPosts();
+    // savedPosts = await getSavedPosts();
+    // hotPosts = await getHotPosts('android');
+    hotPosts = getHotPosts('android');
     setState(() => isLoading = false);
   }
 
   @override
-  Widget build(BuildContext context) {
-    
+  Widget build(BuildContext context) {    
     return Material(
       child: Container(
-        width: 400.0,
         child: isLoading
         ? CircularProgressIndicator()
         : ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: savedPosts.length,
+          scrollDirection: Axis.vertical,
+          itemCount: hotPosts.length,
           itemBuilder: (BuildContext context, int index) => buildPostCard(index)
         ),
       ),
@@ -59,35 +61,43 @@ class _RedditHomeState extends State<RedditHome> {
   }
 
   Widget buildPostCard(int index) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        savedPosts[index].kind == "t1"
-          ? Text(savedPosts[index].title, style: titleStyle,)
-          : Text(savedPosts[index].title, style: titleStyle,),
-        Text(savedPosts[index].subreddit, style: subtitleStyle),
-        Image.network(
-          savedPosts[index].kind == "t3" && savedPosts[index].previewList != null
-            ? savedPosts[index].previewList["images"][0]["variants"].containsKey("gif")
-              ? savedPosts[index].previewList["images"][0]["variants"]["gif"]["source"]["url"]
-              : savedPosts[index].previewList["images"][0]["source"]["url"].replaceAll('amp;','')
-            : 'https://picsum.photos/250?image=9',
-          fit: BoxFit.contain
-        ), 
-        // savedPosts[index].kind == "t3"
-        //   ? Text(savedPosts[index].previewList["images"][0]["source"]["url"].replaceAll('amp;',''))
-        //   : Text('https://picsum.photos/250?image=9'),
-        // SizedBox(height: 20.0,),
-      ],
+    return ListTile(
+      leading: Text('A'),
+      title: Text(hotPosts[index].title),
+      trailing: Text(hotPosts[index].subreddit),
     );
   }
 
-  TextStyle titleStyle = TextStyle(
-    fontSize: 40.0,
-    fontWeight: FontWeight.bold,
-  );
+//   Widget buildPostCard(int index) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: <Widget>[
+//         savedPosts[index].kind == "t1"
+//           ? Text(savedPosts[index].title, style: titleStyle,)
+//           : Text(savedPosts[index].title, style: titleStyle,),
+//         Text(savedPosts[index].subreddit, style: subtitleStyle),
+//         // Image.network(
+//         //   savedPosts[index].kind == "t3" && savedPosts[index].previewList != null
+//         //     ? savedPosts[index].previewList["images"][0]["variants"].containsKey("gif")
+//         //       ? savedPosts[index].previewList["images"][0]["variants"]["gif"]["source"]["url"]
+//         //       : savedPosts[index].previewList["images"][0]["source"]["url"].replaceAll('amp;','')
+//         //     : 'https://picsum.photos/250?image=9',
+//         //   fit: BoxFit.contain
+//         // ), 
+//         // savedPosts[index].kind == "t3"
+//         //   ? Text(savedPosts[index].previewList["images"][0]["source"]["url"].replaceAll('amp;',''))
+//         //   : Text('https://picsum.photos/250?image=9'),
+//         // SizedBox(height: 20.0,),
+//       ],
+//     );
+//   }
 
-  TextStyle subtitleStyle = TextStyle(
-    fontSize: 30.0,
-  );
+//   TextStyle titleStyle = TextStyle(
+//     fontSize: 40.0,
+//     fontWeight: FontWeight.bold,
+//   );
+
+//   TextStyle subtitleStyle = TextStyle(
+//     fontSize: 30.0,
+//   );
 }
