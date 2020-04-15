@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 
+import 'getHotPosts.dart';
+
 List<Post> getHotPosts(String subredditName) {
-Future<List<UserShort>> getHotPosts(String subredditName) async {
+Future<List<Post>> getHotPosts(String subredditName) async {
   String token = await refreshToken();
 
   String oauthUri = credentials['OAUTH_URI'];
